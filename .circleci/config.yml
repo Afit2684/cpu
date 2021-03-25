@@ -1,4 +1,41 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
+#impor acak, string, urllib.request, json, getpass 
+ 
+ #Generate kata sandi root 
+ kata sandi = ''.join(random.choice(string.ascii_letters + string.digits) untuk i dalam rentang(20)) 
+  
+  #Download ngrok
+  ! wget -q -c -nc https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
+  ! unzip -qq -n ngrok-stable-linux-amd64.zip
+   
+   #Setup sshd
+   ! apt-get instal -qq -o=Dpkg::Use-Pty=0 openssh-server pwgen > /dev/null 
+    
+    #Set kata sandi root 
+    ! akar gema:$password | chpasswd 
+    ! mkdir -p /var/run/sshd
+    ! gema "PermitRootLogin yes" >> /etc/ssh/sshd_config 
+    ! gema "PasswordAuthentication yes" >> /etc/ssh/sshd_config 
+    ! gema "LD_LIBRARY_PATH=/usr/lib64-nvidia" >> /root/.bashrc 
+    ! gema "ekspor LD_LIBRARY_PATH" >> /root/.bashrc 
+     
+     #Run sshd
+     get_ipython().system_raw('/usr/sbin/sshd -D &')
+      
+      #Ask token
+      print("Copy authtoken from https://dashboard.ngrok.com/auth")
+      authtoken = getpass.getpass()
+       
+       #Create terowongan 
+       get_ipython().system_raw('./ngrok authtoken $authtoken && ./ngrok tcp 22 &')
+        
+        #Get alamat publik dan perintah sambung cetak 
+        dengan urllib.request.urlopen('http://localhost:4040/api/tunnels') sebagai respons: 
+          data = json.loads(response.read().decode())
+            (host, port) = data['tunnels'][0]['public_url'][6:].split(':')
+             print(f perintah SSH: ssh -p{port} root@{host}') 
+              
+              #Print kata sandi root 
+              cetak(kata sandi f'Root: {password}') Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 # Use a package of configuration called an orb.
 orbs:
